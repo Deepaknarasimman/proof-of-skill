@@ -1,0 +1,912 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Proof-of-Skill — Polygon On-Chain Skills Platform</title>
+  <meta name="description" content="Showcase your verified skills on-chain. Earn NFT badges, complete challenges, and build your reputation on Polygon." />
+  <link rel="stylesheet" href="css/style.css" />
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>⬡</text></svg>" />
+</head>
+<body>
+
+  <!-- Ambient Background -->
+  <div class="ambient-bg"><div class="orb"></div><div class="orb"></div><div class="orb"></div></div>
+  <canvas id="particles-canvas"></canvas>
+
+  <!-- Toast Notifications -->
+  <div class="toast-container" id="toastContainer"></div>
+
+  <!-- Minting Animation Overlay -->
+  <div class="minting-animation" id="mintingOverlay">
+    <div class="mint-spinner"></div>
+    <div class="mint-text" id="mintText">Minting your NFT Badge on Polygon...</div>
+  </div>
+
+  <!-- Navigation -->
+  <nav class="navbar" id="navbar">
+    <a href="#" class="nav-brand" onclick="navigateTo('landing')">
+      <div class="logo-icon">PoS</div>
+      <span>Proof-of-Skill</span>
+    </a>
+    <ul class="nav-links" id="navLinks">
+      <li><a href="#" data-page="landing" class="active" onclick="navigateTo('landing')">Home</a></li>
+      <li><a href="#" data-page="dashboard" onclick="navigateTo('dashboard')">Dashboard</a></li>
+      <li><a href="#" data-page="challenges" onclick="navigateTo('challenges')">Challenges</a></li>
+      <li><a href="#" data-page="badges" onclick="navigateTo('badges')">NFT Badges</a></li>
+      <li><a href="#" data-page="documents" onclick="navigateTo('documents')">Documents</a></li>
+      <li><a href="#" data-page="document-inspector" onclick="navigateTo('document-inspector')">🔍 Inspector</a></li>
+      <li><a href="#" data-page="company-verify" onclick="navigateTo('company-verify')" class="nav-verify-link">🏢 Verify</a></li>
+      <li><a href="#" data-page="smart-contracts" onclick="navigateTo('smart-contracts')">⛓️ Contracts</a></li>
+      <li><a href="#" data-page="reputation" onclick="navigateTo('reputation')">Reputation</a></li>
+      <li><a href="#" data-page="profile" onclick="navigateTo('profile')">Profile</a></li>
+    </ul>
+    <div class="nav-wallet" id="navWallet" style="display:none;">
+      <div class="network-badge"><div class="dot"></div> Polygon</div>
+      <button class="btn btn-sm btn-secondary" id="navWalletBtn" onclick="navigateTo('profile')">
+        <span id="navWalletAddr">0x0000</span>
+      </button>
+    </div>
+    <button class="hamburger" id="hamburger" onclick="toggleMobileNav()">
+      <span></span><span></span><span></span>
+    </button>
+  </nav>
+
+  <!-- ═══════════ LANDING PAGE ═══════════ -->
+  <div class="page active" id="page-landing">
+    <div class="container">
+      <section class="hero">
+        <div class="hero-badge">
+          <span class="tag polygon">⬡ Polygon</span>
+          <span>On-Chain Verified Skills</span>
+        </div>
+        <h1>Prove Your Skills.<br/>Own Your Reputation.</h1>
+        <p>Complete challenges, earn tamper-proof NFT skill badges, and build an on-chain reputation that speaks for itself. Powered by Polygon.</p>
+        <div class="hero-actions">
+          <button class="btn btn-primary btn-lg" onclick="navigateTo('login')">🚀 Get Started</button>
+          <button class="btn btn-secondary btn-lg" onclick="navigateTo('challenges')">Explore Challenges</button>
+          <button class="btn btn-outline btn-lg" onclick="navigateTo('company-verify')" style="border-color:var(--accent-cyan);color:var(--accent-cyan);">🏢 Company Verify</button>
+        </div>
+        <div class="hero-visual">
+          <div class="chain-graphic">
+            <div class="chain-node">🎯</div><div class="chain-connector"></div>
+            <div class="chain-node">⚡</div><div class="chain-connector"></div>
+            <div class="chain-node">🏆</div><div class="chain-connector"></div>
+            <div class="chain-node">🔗</div><div class="chain-connector"></div>
+            <div class="chain-node">💎</div>
+          </div>
+        </div>
+      </section>
+
+      <section class="features">
+        <div class="section-title">
+          <h2>Platform Features</h2>
+          <p>Everything you need to build a verifiable skill portfolio</p>
+        </div>
+        <div class="features-grid">
+          <div class="glass-card feature-card">
+            <div class="feature-icon purple">🎯</div>
+            <h3>Proof-of-Skill Challenges</h3>
+            <p>Complete timed, skill-based challenges across multiple domains. Each challenge is verified on-chain to ensure authenticity.</p>
+          </div>
+          <div class="glass-card feature-card">
+            <div class="feature-icon cyan">🏅</div>
+            <h3>NFT Skill Badges</h3>
+            <p>Earn unique NFT badges for completed challenges. These tamper-proof credentials live forever on Polygon blockchain.</p>
+          </div>
+          <div class="glass-card feature-card">
+            <div class="feature-icon green">📊</div>
+            <h3>Skill Reputation Score</h3>
+            <p>Your on-chain reputation score grows as you complete challenges. Transparent, verifiable, and completely decentralized.</p>
+          </div>
+        </div>
+      </section>
+
+      <section class="stats">
+        <div class="stats-grid">
+          <div class="glass-card stat-item"><div class="stat-number" data-target="12847">0</div><div class="stat-label">Challenges Completed</div></div>
+          <div class="glass-card stat-item"><div class="stat-number" data-target="8432">0</div><div class="stat-label">NFT Badges Minted</div></div>
+          <div class="glass-card stat-item"><div class="stat-number" data-target="3291">0</div><div class="stat-label">Active Users</div></div>
+          <div class="glass-card stat-item"><div class="stat-number" data-target="99">0</div><div class="stat-label">Skill Categories</div></div>
+        </div>
+      </section>
+    </div>
+    <footer class="footer">
+      <div class="container">
+        <p>⬡ Proof-of-Skill © 2026 — Built on <a href="#">Polygon</a> | <a href="#">Documentation</a> | <a href="#">GitHub</a></p>
+      </div>
+    </footer>
+  </div>
+
+  <!-- ═══════════ LOGIN PAGE ═══════════ -->
+  <div class="login-page" id="page-login">
+    <div class="login-container">
+      <div class="login-header">
+        <div class="logo-large">PoS</div>
+        <h2>Identify Yourself</h2>
+        <p>Your identity is your wallet. Connect to Polygon to access your decentralised portfolio.</p>
+      </div>
+      <div class="glass-card login-card" style="display:flex; flex-direction:column; align-items:center; padding:40px;">
+        <div class="login-visual" style="font-size:4rem; margin-bottom:24px;">🔐</div>
+        <button class="wallet-btn" id="connectWalletBtn" onclick="connectWallet()" style="width:100%; max-width:320px;">
+          <span class="wallet-icon">🦊</span>
+          Connect with MetaMask
+        </button>
+        <p style="margin-top:24px; color:var(--text-muted); font-size:0.85rem; text-align:center;">
+          By connecting, you verify your on-chain credentials and reputation scores.
+        </p>
+      </div>
+    </div>
+  </div>
+
+
+  <!-- ═══════════ DASHBOARD ═══════════ -->
+  <div class="page" id="page-dashboard">
+    <div class="container">
+      <div class="dashboard-header">
+        <div class="welcome-text">
+          <h2>👋 Welcome, <span id="dashName">User</span></h2>
+          <p>Here's your on-chain skill overview</p>
+        </div>
+        <div class="wallet-info"><div class="wallet-dot"></div><span id="dashWallet">0x000...000</span></div>
+      </div>
+
+      <div class="quick-stats">
+        <div class="glass-card quick-stat-card">
+          <div class="quick-stat-icon purple">📊</div>
+          <div class="quick-stat-info"><h3 id="statReputation">750</h3><p>Reputation Score</p></div>
+        </div>
+        <div class="glass-card quick-stat-card">
+          <div class="quick-stat-icon cyan">🏅</div>
+          <div class="quick-stat-info"><h3 id="statBadges">5</h3><p>NFT Badges</p></div>
+        </div>
+        <div class="glass-card quick-stat-card">
+          <div class="quick-stat-icon green">✅</div>
+          <div class="quick-stat-info"><h3 id="statChallenges">12</h3><p>Challenges Done</p></div>
+        </div>
+        <div class="glass-card quick-stat-card">
+          <div class="quick-stat-icon orange">🔥</div>
+          <div class="quick-stat-info"><h3 id="statStreak">7</h3><p>Day Streak</p></div>
+        </div>
+      </div>
+
+      <div class="dashboard-grid">
+        <div class="glass-card">
+          <div class="section-header">
+            <h3>Recent Activity</h3>
+            <button class="btn btn-sm btn-secondary" onclick="navigateTo('challenges')">View All</button>
+          </div>
+          <div class="activity-list" id="activityList"></div>
+        </div>
+        <div class="glass-card">
+          <div class="section-header"><h3>Quick Actions</h3></div>
+          <div style="display:flex;flex-direction:column;gap:12px;margin-top:16px;">
+            <button class="btn btn-primary" style="width:100%" onclick="navigateTo('challenges')">🎯 Start Challenge</button>
+            <button class="btn btn-secondary" style="width:100%" onclick="navigateTo('badges')">🏅 View Badges</button>
+            <button class="btn btn-secondary" style="width:100%" onclick="navigateTo('reputation')">📊 Leaderboard</button>
+            <button class="btn btn-outline" style="width:100%" onclick="navigateTo('profile')">👤 Edit Profile</button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <footer class="footer"><div class="container"><p>⬡ Proof-of-Skill © 2026 — Powered by Polygon</p></div></footer>
+  </div>
+
+  <!-- ═══════════ CHALLENGES PAGE ═══════════ -->
+  <div class="page" id="page-challenges">
+    <div class="container">
+      <div class="section-title" style="margin-bottom:24px;text-align:left;">
+        <h2>🎯 Proof-of-Skill Challenges</h2>
+        <p>Complete challenges to earn XP and unlock NFT badges</p>
+      </div>
+      <div class="challenge-tabs" id="challengeTabs">
+        <button class="challenge-tab active" data-filter="all">All</button>
+        <button class="challenge-tab" data-filter="blockchain">Blockchain</button>
+        <button class="challenge-tab" data-filter="defi">DeFi</button>
+        <button class="challenge-tab" data-filter="smart-contracts">Smart Contracts</button>
+        <button class="challenge-tab" data-filter="security">Security</button>
+        <button class="challenge-tab" data-filter="frontend">Frontend</button>
+      </div>
+      <div class="challenges-grid" id="challengesGrid"></div>
+    </div>
+    <footer class="footer"><div class="container"><p>⬡ Proof-of-Skill © 2026 — Powered by Polygon</p></div></footer>
+  </div>
+
+  <!-- ═══════════ CHALLENGE MODAL ═══════════ -->
+  <div class="modal-overlay" id="challengeModal">
+    <div class="modal">
+      <div class="modal-header">
+        <h3 id="challengeModalTitle">Challenge</h3>
+        <div style="display:flex;align-items:center;gap:16px;">
+          <div class="quiz-timer" id="challengeTimer">⏱ <span id="timerDisplay">02:00</span></div>
+          <button class="modal-close" onclick="closeChallenge()">&times;</button>
+        </div>
+      </div>
+      <div class="modal-body" id="challengeModalBody"></div>
+      <div class="modal-footer">
+        <button class="btn btn-secondary" onclick="closeChallenge()">Cancel</button>
+        <button class="btn btn-primary" id="submitChallengeBtn" onclick="submitChallenge()">Submit Answer</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══════════ NFT BADGES PAGE ═══════════ -->
+  <div class="page" id="page-badges">
+    <div class="container">
+      <div class="badges-header">
+        <div>
+          <h2>🏅 NFT Skill Badges</h2>
+          <p style="color:var(--text-secondary);">Your on-chain verifiable credentials on Polygon</p>
+        </div>
+        <div style="display:flex;gap:8px;">
+          <span class="tag polygon">⬡ Polygon Mainnet</span>
+          <span class="tag onchain">🔗 On-Chain</span>
+        </div>
+      </div>
+      <div class="badges-grid" id="badgesGrid"></div>
+    </div>
+    <footer class="footer"><div class="container"><p>⬡ Proof-of-Skill © 2026 — Powered by Polygon</p></div></footer>
+  </div>
+
+  <!-- ═══════════ REPUTATION PAGE ═══════════ -->
+  <div class="page" id="page-reputation">
+    <div class="container">
+      <div class="section-title" style="text-align:left;margin-bottom:24px;">
+        <h2>📊 Skill Reputation Score</h2>
+        <p>Your decentralized, tamper-proof reputation on Polygon</p>
+      </div>
+      <div class="reputation-top">
+        <div class="glass-card reputation-score-card">
+          <div class="score-circle">
+            <svg viewBox="0 0 100 100">
+              <defs><linearGradient id="scoreGradient" x1="0%" y1="0%" x2="100%" y2="0%"><stop offset="0%" stop-color="#8b5cf6"/><stop offset="100%" stop-color="#06b6d4"/></linearGradient></defs>
+              <circle class="bg-circle" cx="50" cy="50" r="42"/>
+              <circle class="progress-circle" id="scoreProgressCircle" cx="50" cy="50" r="42" stroke-dasharray="264" stroke-dashoffset="264"/>
+            </svg>
+            <div><div class="score-value" id="reputationScoreDisplay">0</div></div>
+          </div>
+          <div class="score-label">out of 1000</div>
+          <div style="margin-top:16px;">
+            <span class="tag polygon" style="font-size:0.8rem;">Level: <span id="reputationLevel">Apprentice</span></span>
+          </div>
+        </div>
+        <div class="glass-card score-breakdown">
+          <h3 style="margin-bottom:16px;font-family:var(--font-display);">Score Breakdown</h3>
+          <div class="breakdown-item"><div class="breakdown-label"><div class="dot" style="background:var(--accent-purple);"></div><span>Challenges Completed</span></div><div class="breakdown-bar"><div class="breakdown-fill" style="background:var(--accent-purple);" data-width="65%"></div></div><span style="font-weight:600;">325</span></div>
+          <div class="breakdown-item"><div class="breakdown-label"><div class="dot" style="background:var(--accent-cyan);"></div><span>NFT Badges Earned</span></div><div class="breakdown-bar"><div class="breakdown-fill" style="background:var(--accent-cyan);" data-width="50%"></div></div><span style="font-weight:600;">200</span></div>
+          <div class="breakdown-item"><div class="breakdown-label"><div class="dot" style="background:var(--accent-green);"></div><span>Streak Bonus</span></div><div class="breakdown-bar"><div class="breakdown-fill" style="background:var(--accent-green);" data-width="35%"></div></div><span style="font-weight:600;">125</span></div>
+          <div class="breakdown-item"><div class="breakdown-label"><div class="dot" style="background:var(--accent-orange);"></div><span>Community Votes</span></div><div class="breakdown-bar"><div class="breakdown-fill" style="background:var(--accent-orange);" data-width="25%"></div></div><span style="font-weight:600;">100</span></div>
+        </div>
+      </div>
+      <div class="glass-card leaderboard">
+        <div class="section-header"><h3>🏆 Global Leaderboard</h3></div>
+        <table class="leaderboard-table">
+          <thead><tr><th>Rank</th><th>User</th><th>Score</th><th>Badges</th><th>Level</th></tr></thead>
+          <tbody id="leaderboardBody"></tbody>
+        </table>
+      </div>
+    </div>
+    <footer class="footer"><div class="container"><p>⬡ Proof-of-Skill © 2026 — Powered by Polygon</p></div></footer>
+  </div>
+
+  <!-- ═══════════ PROFILE PAGE ═══════════ -->
+  <div class="page" id="page-profile">
+    <div class="container">
+      <div class="glass-card profile-header-card">
+        <div class="profile-avatar" id="profileAvatar">U</div>
+        <div class="profile-info">
+          <h2 id="profileName">User</h2>
+          <div class="profile-address" id="profileAddress">0x0000...0000</div>
+          <div class="profile-stats">
+            <div class="profile-stat"><div class="value" id="profileReputation">750</div><div class="label">Reputation</div></div>
+            <div class="profile-stat"><div class="value" id="profileBadges">5</div><div class="label">Badges</div></div>
+            <div class="profile-stat"><div class="value" id="profileChallenges">12</div><div class="label">Challenges</div></div>
+          </div>
+        </div>
+      </div>
+      <div class="glass-card profile-badges">
+        <h3 style="font-family:var(--font-display);">🏅 My NFT Badges</h3>
+        <div class="profile-badges-grid" id="profileBadgesGrid"></div>
+      </div>
+      <div class="glass-card" style="margin-top:24px;">
+        <h3 style="font-family:var(--font-display);margin-bottom:16px;">⚙️ Settings</h3>
+        <div class="form-group">
+          <label>Display Name</label>
+          <input type="text" class="form-input" id="settingsName" placeholder="Enter display name" />
+        </div>
+        
+        <div style="margin-top:24px; padding-top:24px; border-top:1px solid rgba(255,255,255,0.1);">
+          <h4 style="margin-bottom:12px; display:flex; align-items:center; gap:8px;">
+            📦 IPFS Storage (Pinata)
+            <span class="tag onchain" id="ipfsStatus" style="font-size:0.6rem;">Status: Local Only</span>
+          </h4>
+          <p style="color:var(--text-muted); font-size:0.8rem; margin-bottom:16px;">
+            Add your Pinata API keys to enable decentralized file storage on IPFS.
+          </p>
+          <div class="form-group">
+            <label>Pinata API Key</label>
+            <input type="password" class="form-input" id="pinataApiKey" placeholder="Ente Pinata API Key" />
+          </div>
+          <div class="form-group">
+            <label>Pinata Secret Key</label>
+            <input type="password" class="form-input" id="pinataSecretKey" placeholder="Enter Pinata Secret Key" />
+          </div>
+        </div>
+
+        <div style="margin-top:24px; display:flex; gap:12px;">
+          <button class="btn btn-primary" onclick="updateProfile()">Save All Changes</button>
+          <button class="btn btn-outline" onclick="logout()">Logout</button>
+        </div>
+      </div>
+    </div>
+    <footer class="footer"><div class="container"><p>⬡ Proof-of-Skill © 2026 — Powered by Polygon</p></div></footer>
+  </div>
+
+  <!-- ═══════════ DOCUMENTS & CERTIFICATES PAGE ═══════════ -->
+  <div class="page" id="page-documents">
+    <div class="container">
+      <div class="docs-page-header">
+        <div>
+          <h2>📄 Document & Certificate Vault</h2>
+          <p style="color:var(--text-secondary);">Upload, verify, and securely share your documents on-chain. Duplicates are automatically detected.</p>
+        </div>
+        <div style="display:flex;gap:8px;">
+          <span class="tag polygon">⬡ On-Chain Verified</span>
+          <span class="tag onchain">🔒 Tamper-Proof</span>
+        </div>
+      </div>
+
+      <!-- Upload & Verify Section -->
+      <div class="docs-grid-top">
+        <div class="glass-card doc-upload-card">
+          <div class="doc-card-title">
+            <div class="doc-icon-circle purple">📤</div>
+            <h3>Upload Document / Certificate</h3>
+          </div>
+          <p class="doc-card-subtitle">Upload your document to verify authenticity. Duplicate documents are automatically rejected.</p>
+          <div class="doc-upload-zone" id="docUploadZone">
+            <div class="upload-icon">📁</div>
+            <p class="upload-main-text">Drag & drop your file here</p>
+            <p class="upload-sub-text">or click to browse • PDF, PNG, JPG (max 50MB)</p>
+            <input type="file" id="docFileInput" accept=".pdf,.png,.jpg,.jpeg" style="display:none;" />
+          </div>
+          <div class="doc-upload-info" id="docUploadInfo" style="display:none;">
+            <div class="upload-file-preview">
+              <div class="file-icon">📄</div>
+              <div class="file-details">
+                <div class="file-name" id="uploadFileName">document.pdf</div>
+                <div class="file-size" id="uploadFileSize">2.4 MB</div>
+              </div>
+              <button class="btn btn-sm btn-outline" onclick="removeUploadedFile()" title="Remove">✕</button>
+            </div>
+            <div class="doc-hash-display" id="docHashDisplay">
+              <span class="hash-label">SHA-256 Hash:</span>
+              <code id="docHashValue">computing...</code>
+            </div>
+          </div>
+          <div class="form-group" style="margin-top:16px;">
+            <label for="docTitle">Document Title</label>
+            <input type="text" id="docTitle" class="form-input" placeholder="e.g. Bachelor's Degree Certificate" />
+          </div>
+          <div class="form-group">
+            <label for="docType">Document Type</label>
+            <select id="docType" class="form-input">
+              <option value="certificate">Certificate</option>
+              <option value="degree">Degree</option>
+              <option value="transcript">Transcript</option>
+              <option value="license">License / Permit</option>
+              <option value="award">Award / Achievement</option>
+              <option value="identity">Identity Document</option>
+              <option value="other">Other</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label for="docIssuer">Issuing Organization</label>
+            <input type="text" id="docIssuer" class="form-input" placeholder="e.g. MIT, Google, AWS" />
+          </div>
+          <button class="btn btn-primary" style="width:100%;margin-top:8px;" id="uploadDocBtn" onclick="uploadDocument()" disabled>
+            🔐 Verify & Upload to Blockchain
+          </button>
+        </div>
+
+        <div class="glass-card doc-verify-card">
+          <div class="doc-card-title">
+            <div class="doc-icon-circle cyan">🔍</div>
+            <h3>Verify a Document</h3>
+          </div>
+          <p class="doc-card-subtitle">Paste a document hash or upload a file to check if it's already registered on-chain.</p>
+          <div class="form-group" style="margin-top:20px;">
+            <label for="verifyHash">Document Hash (SHA-256)</label>
+            <input type="text" id="verifyHash" class="form-input" placeholder="Paste SHA-256 hash here..." />
+          </div>
+          <div class="verify-or">— or upload file to auto-hash —</div>
+          <div class="doc-upload-zone small" id="verifyUploadZone">
+            <div class="upload-icon">🔎</div>
+            <p class="upload-main-text" style="font-size:0.85rem;">Drop file to verify</p>
+            <input type="file" id="verifyFileInput" accept=".pdf,.png,.jpg,.jpeg" style="display:none;" />
+          </div>
+          <button class="btn btn-secondary" style="width:100%;margin-top:16px;" onclick="verifyDocument()">
+            🛡️ Check Authenticity
+          </button>
+          <div class="verify-result" id="verifyResult" style="display:none;"></div>
+
+          <!-- Stats -->
+          <div class="doc-stats-mini">
+            <div class="doc-stat-mini">
+              <div class="doc-stat-value" id="totalDocsCount">0</div>
+              <div class="doc-stat-label">Documents</div>
+            </div>
+            <div class="doc-stat-mini">
+              <div class="doc-stat-value" id="verifiedDocsCount">0</div>
+              <div class="doc-stat-label">Verified</div>
+            </div>
+            <div class="doc-stat-mini">
+              <div class="doc-stat-value" id="rejectedDocsCount">0</div>
+              <div class="doc-stat-label">Duplicates Blocked</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Public Document Registry -->
+      <div class="glass-card" style="margin-top:32px;">
+        <div class="section-header" style="margin-bottom:20px;">
+          <h3 style="font-family:var(--font-display);">🌐 Public Document Registry</h3>
+          <div style="display:flex;gap:8px;align-items:center;">
+            <span class="tag onchain" style="font-size:0.7rem;">👁️ View Only — No Downloads</span>
+            <div class="search-box">
+              <input type="text" id="docSearchInput" class="form-input" placeholder="Search documents..." style="padding:8px 14px;font-size:0.8rem;" oninput="filterDocuments()" />
+            </div>
+          </div>
+        </div>
+        <div class="doc-registry-list" id="docRegistryList">
+          <div class="doc-empty-state">
+            <div class="empty-icon">📭</div>
+            <p>No documents uploaded yet. Be the first to verify a document!</p>
+          </div>
+        </div>
+      </div>
+    </div>
+    <footer class="footer"><div class="container"><p>⬡ Proof-of-Skill © 2026 — Powered by Polygon</p></div></footer>
+  </div>
+
+  <!-- ═══════════ DOCUMENT INSPECTOR PAGE ═══════════ -->
+  <div class="page" id="page-document-inspector">
+    <div class="inspector-layout">
+      <aside class="inspector-sidebar">
+        <div class="sidebar-header">
+          <h3>📑 Document Vault</h3>
+          <p>Select a file to inspect</p>
+        </div>
+        <div class="sidebar-search">
+          <input type="text" placeholder="Search documents..." id="inspectorSearch" oninput="filterInspectorDocs()">
+        </div>
+        <div id="inspectorDocList" class="inspector-doc-list">
+          <!-- Documents populated here -->
+        </div>
+      </aside>
+
+      <main class="inspector-theater">
+        <div id="inspectorEmptyState" class="inspector-empty">
+          <div class="empty-icon">🛡️</div>
+          <h2>Security Inspector</h2>
+          <p>Select a document from the left to begin a high-fidelity security review.</p>
+        </div>
+
+        <div id="inspectorContent" class="inspector-content" style="display:none;">
+          <header class="inspector-content-header">
+            <div class="doc-info-main">
+              <h2 id="inspectorDocTitle">Document Title</h2>
+              <div class="inspector-meta-row">
+                <span id="inspectorDocType" class="doc-meta-tag">Type</span>
+                <span id="inspectorDocIssuer" class="doc-meta-tag">Issuer</span>
+                <span id="inspectorDocCode" class="doc-meta-tag code">POS-XXXXXX</span>
+              </div>
+            </div>
+            <div class="inspector-actions">
+              <div class="viewer-controls">
+                <button class="btn btn-icon btn-sm" onclick="zoomInspector(-0.1)">➖</button>
+                <span id="inspectorZoomLevel">100%</span>
+                <button class="btn btn-icon btn-sm" onclick="zoomInspector(0.1)">➕</button>
+              </div>
+              <button class="btn btn-sm btn-outline" onclick="shareVerificationLink()">🔗 Share Link</button>
+            </div>
+          </header>
+
+          <div class="security-banner-ticker">
+            <span>🔒 PROTECTED VIEW-ONLY MODE</span>
+            <span>•</span>
+            <span>NO DOWNLOADS ALLOWED</span>
+            <span>•</span>
+            <span>REPRODUCTION PROHIBITED</span>
+            <span>•</span>
+            <span>BLOCKCHAIN VERIFIED</span>
+          </div>
+
+          <div id="inspectorPages" class="inspector-pages-gallery">
+            <!-- All pages rendered here -->
+          </div>
+        </div>
+      </main>
+    </div>
+    <footer class="footer"><div class="container"><p>⬡ Proof-of-Skill © 2026 — Powered by Polygon</p></div></footer>
+  </div>
+
+  <!-- ═══════════ SMART CONTRACTS & TESTNET PAGE ═══════════ -->
+  <div class="page" id="page-smart-contracts">
+    <div class="container">
+      <!-- Hero -->
+      <div class="sc-hero">
+        <div class="sc-hero-icon">⛓️</div>
+        <h1>Smart Contracts & Testnet</h1>
+        <p>Deploy, interact, and monitor your <strong>DocumentVerification</strong> smart contract on Polygon testnets and mainnet.</p>
+        <div class="sc-badges">
+          <span class="tag polygon">⬡ Polygon Network</span>
+          <span class="tag onchain">📜 Solidity ^0.8.19</span>
+          <span class="sc-badge-live" id="scNetStatus">🔴 Not Connected</span>
+        </div>
+      </div>
+
+      <div class="sc-grid">
+        <!-- Network Selector -->
+        <div class="glass-card sc-network-card">
+          <h3>🌐 Network Configuration</h3>
+          <p class="sc-subtitle">Select which Polygon network to target for contract deployment and interaction.</p>
+          <div class="sc-network-list">
+            <label class="sc-network-option" id="netAmoy">
+              <input type="radio" name="scNetwork" value="amoy" checked />
+              <div class="sc-net-info">
+                <strong>Polygon Amoy Testnet</strong>
+                <span>Free test MATIC • Chain ID: 80002</span>
+                <code>https://rpc-amoy.polygon.technology</code>
+              </div>
+              <span class="sc-net-tag testnet">TESTNET</span>
+            </label>
+            <label class="sc-network-option" id="netMumbai">
+              <input type="radio" name="scNetwork" value="mumbai" />
+              <div class="sc-net-info">
+                <strong>Polygon Mumbai Testnet</strong>
+                <span>Legacy testnet • Chain ID: 80001</span>
+                <code>https://rpc-mumbai.maticvigil.com</code>
+              </div>
+              <span class="sc-net-tag testnet">TESTNET</span>
+            </label>
+            <label class="sc-network-option" id="netMainnet">
+              <input type="radio" name="scNetwork" value="mainnet" />
+              <div class="sc-net-info">
+                <strong>Polygon Mainnet</strong>
+                <span>Production • Chain ID: 137</span>
+                <code>https://polygon-rpc.com</code>
+              </div>
+              <span class="sc-net-tag mainnet">MAINNET</span>
+            </label>
+          </div>
+          <button class="btn btn-primary" style="width:100%;margin-top:16px;" onclick="connectToNetwork()">
+            🔌 Connect to Selected Network
+          </button>
+          <div class="sc-wallet-info" id="scWalletInfo" style="display:none;">
+            <div class="sc-wallet-row"><span>Wallet:</span><code id="scWalletAddr">—</code></div>
+            <div class="sc-wallet-row"><span>Balance:</span><code id="scWalletBal">— MATIC</code></div>
+            <div class="sc-wallet-row"><span>Chain ID:</span><code id="scChainId">—</code></div>
+          </div>
+        </div>
+
+        <!-- Contract Deployment -->
+        <div class="glass-card sc-deploy-card">
+          <h3>🚀 Deploy Contract</h3>
+          <p class="sc-subtitle">Deploy the <code>DocumentVerification.sol</code> smart contract to the selected network.</p>
+          <div class="sc-contract-preview">
+            <div class="sc-file-header">
+              <span>📜 DocumentVerification.sol</span>
+              <span class="sc-solidity-tag">Solidity ^0.8.19</span>
+            </div>
+            <pre class="sc-code-block" id="scContractCode">// Loading contract source...</pre>
+          </div>
+          <div class="sc-deploy-actions">
+            <button class="btn btn-primary" style="flex:1;" onclick="deployContract()" id="scDeployBtn">
+              🚀 Deploy to Network
+            </button>
+            <button class="btn btn-secondary" onclick="compileContract()">
+              ⚙️ Compile
+            </button>
+          </div>
+          <div class="sc-deploy-result" id="scDeployResult" style="display:none;"></div>
+        </div>
+      </div>
+
+      <!-- Contract Interaction -->
+      <div class="glass-card sc-interact-card" style="margin-top:24px;">
+        <h3>🔗 Interact with Contract</h3>
+        <p class="sc-subtitle">Call functions on your deployed <code>DocumentVerification</code> contract.</p>
+        <div class="form-group" style="margin-top:16px;">
+          <label>Contract Address</label>
+          <input type="text" class="form-input" id="scContractAddr" placeholder="0x... (paste deployed contract address)" />
+        </div>
+
+        <div class="sc-functions-grid">
+          <!-- Write: verifyDocument -->
+          <div class="sc-fn-card write">
+            <div class="sc-fn-header"><span class="sc-fn-type write">WRITE</span><strong>verifyDocument</strong></div>
+            <div class="form-group">
+              <label>Document Hash (SHA-256)</label>
+              <input type="text" class="form-input" id="scDocHash" placeholder="e.g. a1b2c3d4e5f6..." />
+            </div>
+            <div class="form-group">
+              <label>Verification Code</label>
+              <input type="text" class="form-input" id="scVerifyCode" placeholder="e.g. POS-A1B2C3D4" />
+            </div>
+            <button class="btn btn-primary btn-sm" onclick="callVerifyDocument()">⛓️ Submit Tx</button>
+            <div class="sc-fn-result" id="scVerifyResult"></div>
+          </div>
+
+          <!-- Read: isDocumentValid -->
+          <div class="sc-fn-card read">
+            <div class="sc-fn-header"><span class="sc-fn-type read">READ</span><strong>isDocumentValid</strong></div>
+            <div class="form-group">
+              <label>Document Hash</label>
+              <input type="text" class="form-input" id="scCheckHash" placeholder="SHA-256 hash..." />
+            </div>
+            <button class="btn btn-secondary btn-sm" onclick="callIsDocumentValid()">🔍 Query</button>
+            <div class="sc-fn-result" id="scCheckResult"></div>
+          </div>
+
+          <!-- Read: getDocumentByCode -->
+          <div class="sc-fn-card read">
+            <div class="sc-fn-header"><span class="sc-fn-type read">READ</span><strong>getDocumentByCode</strong></div>
+            <div class="form-group">
+              <label>Verification Code</label>
+              <input type="text" class="form-input" id="scLookupCode" placeholder="POS-XXXXXXXX" />
+            </div>
+            <button class="btn btn-secondary btn-sm" onclick="callGetDocumentByCode()">🔍 Query</button>
+            <div class="sc-fn-result" id="scLookupResult"></div>
+          </div>
+
+          <!-- Read: getDocumentByHash -->
+          <div class="sc-fn-card read">
+            <div class="sc-fn-header"><span class="sc-fn-type read">READ</span><strong>getDocumentByHash</strong></div>
+            <div class="form-group">
+              <label>Document Hash</label>
+              <input type="text" class="form-input" id="scHashLookup" placeholder="SHA-256 hash..." />
+            </div>
+            <button class="btn btn-secondary btn-sm" onclick="callGetDocumentByHash()">🔍 Query</button>
+            <div class="sc-fn-result" id="scHashLookupResult"></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Transaction Explorer -->
+      <div class="glass-card" style="margin-top:24px;">
+        <h3>📊 Transaction Explorer</h3>
+        <p class="sc-subtitle">Live feed of all contract transactions on the platform.</p>
+        <div class="sc-tx-table">
+          <table>
+            <thead>
+              <tr>
+                <th>Tx Hash</th>
+                <th>Action</th>
+                <th>Block</th>
+                <th>Gas</th>
+                <th>Status</th>
+              </tr>
+            </thead>
+            <tbody id="scTxTableBody">
+              <tr><td colspan="5" style="text-align:center;color:var(--text-muted);padding:30px;">No transactions yet. Deploy or interact with a contract to see activity.</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+    </div>
+    <footer class="footer"><div class="container"><p>⬡ Proof-of-Skill © 2026 — Powered by Polygon</p></div></footer>
+  </div>
+
+  <!-- ═══════════ COMPANY VERIFICATION PORTAL ═══════════ -->
+  <div class="page" id="page-company-verify">
+    <div class="container">
+      <div class="company-verify-hero">
+        <div class="cv-hero-icon">🏢</div>
+        <h1>Company Verification Portal</h1>
+        <p>Instantly verify any document or certificate — <strong>no college permission required</strong>. Enter the unique verification code or scan the QR code to authenticate.</p>
+        <div class="cv-trust-badges">
+          <span class="tag polygon">⬡ On-Chain Verified</span>
+          <span class="tag onchain">🔗 Blockchain Proof</span>
+          <span class="cv-trust-tag">🚫 No Permission Needed</span>
+          <span class="cv-trust-tag green">✅ Instant Results</span>
+        </div>
+      </div>
+
+      <div class="cv-grid">
+        <!-- Verify by Code -->
+        <div class="glass-card cv-code-card">
+          <div class="cv-card-header">
+            <div class="cv-card-icon">🔑</div>
+            <div>
+              <h3>Verify by Code</h3>
+              <p>Enter the unique verification code printed on the document</p>
+            </div>
+          </div>
+          <div class="form-group" style="margin-top:20px;">
+            <label for="companyVerifyCode">Verification Code</label>
+            <input type="text" id="companyVerifyCode" class="form-input cv-code-input" placeholder="e.g. POS-A1B2C3D4" maxlength="14" oninput="formatVerifyCode(this)" />
+          </div>
+          <button class="btn btn-primary" style="width:100%;" onclick="companyVerifyByCode()">
+            🔍 Verify Document
+          </button>
+        </div>
+
+        <!-- Verify by QR -->
+        <div class="glass-card cv-qr-card">
+          <div class="cv-card-header">
+            <div class="cv-card-icon">📱</div>
+            <div>
+              <h3>Scan QR Code</h3>
+              <p>Scan the QR code from the document to verify instantly</p>
+            </div>
+          </div>
+          <div class="cv-qr-scanner-area" id="cvQrScannerArea">
+            <div class="qr-scanner-placeholder">
+              <div class="qr-scan-icon">📷</div>
+              <p>Camera-based QR scanning</p>
+              <p style="font-size:0.75rem;color:var(--text-muted);margin-top:4px;">Or paste the code from QR manually above</p>
+            </div>
+          </div>
+          <div class="cv-qr-alt">
+            <p style="font-size:0.78rem;color:var(--text-muted);text-align:center;margin-top:12px;">💡 Each document has a QR code containing its unique verification code. Companies can scan this QR to verify without contacting the issuing institution.</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Verification Result -->
+      <div class="cv-result-container" id="cvResultContainer" style="display:none;">
+        <div class="glass-card cv-result-card" id="cvResultCard"></div>
+      </div>
+
+      <!-- How It Works -->
+      <div class="glass-card cv-how-it-works">
+        <h3 style="font-family:var(--font-display);margin-bottom:24px;text-align:center;">🔄 How Company Verification Works</h3>
+        <div class="cv-steps">
+          <div class="cv-step">
+            <div class="cv-step-number">1</div>
+            <div class="cv-step-icon">📄</div>
+            <h4>Candidate Shares Document</h4>
+            <p>The candidate provides their certificate or document with a unique verification code and QR code.</p>
+          </div>
+          <div class="cv-step-arrow">→</div>
+          <div class="cv-step">
+            <div class="cv-step-number">2</div>
+            <div class="cv-step-icon">🔑</div>
+            <h4>Enter Code or Scan QR</h4>
+            <p>Company enters the verification code or scans the QR — no need to contact the college or institution.</p>
+          </div>
+          <div class="cv-step-arrow">→</div>
+          <div class="cv-step">
+            <div class="cv-step-number">3</div>
+            <div class="cv-step-icon">⛓️</div>
+            <h4>Blockchain Verification</h4>
+            <p>The system checks the Polygon blockchain for the document hash, confirming authenticity instantly.</p>
+          </div>
+          <div class="cv-step-arrow">→</div>
+          <div class="cv-step">
+            <div class="cv-step-number">4</div>
+            <div class="cv-step-icon">✅</div>
+            <h4>Instant Result</h4>
+            <p>Get complete verification details — issuer, date, type, and blockchain proof. View in secure mode.</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- All Verified Docs (public search) -->
+      <div class="glass-card" style="margin-top:32px;">
+        <div class="section-header" style="margin-bottom:20px;">
+          <h3 style="font-family:var(--font-display);">📋 Public Verification Registry</h3>
+          <div style="display:flex;gap:8px;align-items:center;">
+            <span class="tag onchain" style="font-size:0.7rem;">👁️ View Only</span>
+            <input type="text" id="cvSearchInput" class="form-input" placeholder="Search by name, code, or issuer..." style="padding:8px 14px;font-size:0.8rem;" oninput="filterCompanyDocs()" />
+          </div>
+        </div>
+        <div class="doc-registry-list" id="cvDocRegistryList">
+          <div class="doc-empty-state">
+            <div class="empty-icon">📭</div>
+            <p>Loading documents...</p>
+          </div>
+        </div>
+      </div>
+    </div>
+    <footer class="footer"><div class="container"><p>⬡ Proof-of-Skill © 2026 — Powered by Polygon</p></div></footer>
+  </div>
+
+  <!-- ═══════════ SECURE DOCUMENT VIEWER MODAL ═══════════ -->
+  <div class="secure-viewer-overlay" id="secureViewerOverlay">
+    <div class="secure-viewer">
+      <div class="secure-viewer-header">
+        <div class="secure-viewer-title">
+          <div class="shield-icon">🛡️</div>
+          <div>
+            <h3 id="viewerDocTitle">Document Title</h3>
+            <span class="viewer-meta" id="viewerDocMeta">Certificate • Verified</span>
+          </div>
+        </div>
+        <div class="secure-viewer-actions">
+          <div class="security-badge">
+            <div class="security-dot"></div>
+            <span>Protected View</span>
+          </div>
+          <div class="secure-viewer-controls">
+            <button class="btn btn-icon btn-sm" onclick="zoomSecureViewer(-0.1)" title="Zoom Out">➖</button>
+            <span class="zoom-level" id="zoomLevel">100%</span>
+            <button class="btn btn-icon btn-sm" onclick="zoomSecureViewer(0.1)" title="Zoom In">➕</button>
+          </div>
+          <button class="btn btn-sm btn-secondary" onclick="closeSecureViewer()">✕ Close</button>
+        </div>
+      </div>
+      <div class="secure-viewer-body" id="secureViewerBody">
+        <!-- Watermark overlay -->
+        <div class="watermark-overlay" id="watermarkOverlay">
+          <div class="watermark-text">PROOF-OF-SKILL VERIFIED</div>
+          <div class="watermark-text">PROOF-OF-SKILL VERIFIED</div>
+          <div class="watermark-text">PROOF-OF-SKILL VERIFIED</div>
+          <div class="watermark-text">PROOF-OF-SKILL VERIFIED</div>
+          <div class="watermark-text">PROOF-OF-SKILL VERIFIED</div>
+          <div class="watermark-text">PROOF-OF-SKILL VERIFIED</div>
+          <div class="watermark-text">PROOF-OF-SKILL VERIFIED</div>
+          <div class="watermark-text">PROOF-OF-SKILL VERIFIED</div>
+        </div>
+        <!-- Screenshot blackout overlay -->
+        <div class="screenshot-blackout" id="screenshotBlackout">
+          <div class="blackout-content">
+            <div class="blackout-icon">🚫</div>
+            <h3>Screenshot Blocked</h3>
+            <p>This document is protected. Screenshots will appear as a black screen.</p>
+          </div>
+        </div>
+        <div class="secure-doc-content" id="secureDocContent">
+          <!-- Multi-page support for PDFs -->
+          <div id="pdfPagesContainer" class="pdf-container"></div>
+        </div>
+        <!-- Progress for PDF loading -->
+        <div id="viewerLoading" class="viewer-loading" style="display:none;">
+          <div class="mint-spinner"></div>
+          <p>Decrypting secure document...</p>
+        </div>
+        <!-- QR Code Section (Optional Toggle) -->
+        <div class="viewer-qr-section" id="viewerQrSection" style="display:none;">
+          <div class="viewer-qr-toggle">
+            <button class="btn btn-sm btn-outline" onclick="toggleViewerQr()" id="viewerQrToggleBtn">📱 Show QR Code</button>
+          </div>
+          <div class="viewer-qr-content" id="viewerQrContent" style="display:none;">
+            <div class="viewer-qr-code" id="viewerQrCode"></div>
+            <div class="viewer-qr-info">
+              <div class="viewer-qr-doc-name" id="viewerQrDocName">Document Name</div>
+              <div class="viewer-qr-doc-issuer" id="viewerQrDocIssuer">Issued by Organization</div>
+              <div class="viewer-verify-code" id="viewerVerifyCode">POS-XXXXXX</div>
+              <p>Share this code or QR with companies for instant verification</p>
+              <button class="btn btn-sm btn-secondary" style="margin-top:10px;font-size:0.7rem;" onclick="shareVerificationLink()">🔗 Copy Verification Link</button>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="secure-viewer-footer">
+        <div class="viewer-security-info">
+          <span>🔒 View Only</span>
+          <span>📵 No Screenshots</span>
+          <span>🚫 No Downloads</span>
+          <span>✋ No Editing</span>
+        </div>
+        <div class="viewer-hash" id="viewerHash">Hash: 0x000...000</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Confetti container -->
+  <div class="confetti-container" id="confettiContainer"></div>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/qrious/4.0.2/qrious.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/ethers/5.7.2/ethers.umd.min.js"></script>
+  <script src="js/blockchain.js"></script>
+  <script src="js/documents.js"></script>
+  <script src="js/company-verify.js"></script>
+  <script src="js/smart-contracts.js"></script>
+  <script src="js/app.js"></script>
+</body>
+</html>

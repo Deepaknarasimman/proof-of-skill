@@ -1,0 +1,17 @@
+{
+  "name": "antigra-project",
+  "version": "1.0.0",
+  "description": "Proof-of-Skill — Polygon On-Chain Skills Platform",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "deploy:amoy": "npx hardhat run scripts/deploy.js --network amoy",
+    "deploy:mumbai": "npx hardhat run scripts/deploy.js --network mumbai",
+    "deploy:mainnet": "npx hardhat run scripts/deploy.js --network polygon"
+  },
+  "devDependencies": {
+    "@nomicfoundation/hardhat-toolbox": "^4.0.0",
+    "dotenv": "^16.3.1",
+    "hardhat": "^2.19.4"
+  }
+}
